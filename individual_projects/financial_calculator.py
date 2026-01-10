@@ -74,9 +74,16 @@ def compound():
     while True:
         rate = input("What will the interest rate be? ").strip()
         if rate.isdigit():
-            rate = 1 + ((int(rate))/100)
-            break
-        print("You did not input a number. Please try again. ")
+            rate = int(rate)
+            if rate > 100:
+                print("Your interest rate is too big. ")
+            elif rate < 0:
+                print("Your interest rate is too small. ")
+            else:
+                rate = 1 + rate/100
+                break
+        else:
+            print("You did not input a number. Please try again. ")
     while True:
         year = input("How many years will you leave the money alone? ").strip()
         if year.isdigit():
@@ -89,7 +96,21 @@ def compound():
     print(f"At the end of {year} years you will have ${final}. ")
 
 #Create a function for Budget Allocator
-def 
+def budget():
+    while True:
+        catogories = input("How many budget categories will you have? ")
+        if categoies.isdigit():
+            categories = int(categories)
+            if categories <= 0:
+                print("You didn't have enough categories. Pleas add more. ")
+            else:
+                break
+        else:
+            break
+    for i in range(categories):
+        print(f"Category {i}: ")
+    while True:
+        income = input("")
 
 #Create a function for Sale Price Calculator
 
