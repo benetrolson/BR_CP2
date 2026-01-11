@@ -57,7 +57,7 @@ def savings():
             print("You inputed an incorect input. Please input the number of the option that you want. ")
     while True:
         deposit = input("How much are you inputing each time? ").strip()
-        if check.isdigit():
+        if deposit.isdigit():
             deposit = int(deposit)
             break
         print("You did not input a number. Please try again. ")
@@ -98,7 +98,7 @@ def compound():
 #Create a function for Budget Allocator
 def budget():
     while True:
-        catogories = input("How many budget categories will you have? ")
+        catogories = input("How many budget categories will you have? ").strip()
         if categoies.isdigit():
             categories = int(categories)
             if categories <= 0:
@@ -110,9 +110,26 @@ def budget():
     for i in range(categories):
         print(f"Category {i}: ")
     while True:
-        income = input("")
+        income = input("What is your monthly income? ").strip()
+        if income.isdigit():
+            income = int(income)
+            if income > 0:
+                break
+            print("Your income is too low. ")
+        print("You did not input a number. Please try again. ")
+    while True:
+        def 
 
 #Create a function for Sale Price Calculator
+def sale():
+    while True:
+        initial = input("How much did this item originally cost? ").strip()
+        if initial.isdigit():
+            initial = int(initial)
+            if initial > 0:
+                break
+            else:
+                print("Your input was too small. ")
 
 #Create a function for Tip Calculator
 
