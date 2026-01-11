@@ -6,10 +6,10 @@ options = ["1. Savings Time Calculator", "2. Compound Interest Calculator", "3. 
 #Create a function for the menu
 def menu(options):
     while True:
-        print("Which option do you want to choose? ").strip()
+        print("Which option do you want to choose? ")
         for i in options:
-            print(options[i])
-        check = input()
+            print(i)
+        check = input().strip()
         if check == "1":
             savings()
             break
@@ -26,7 +26,7 @@ def menu(options):
             tip()
             break
         elif check == "6":
-            return "quit"
+            return check
         else:
             print("You inputed an incorect input. Please input the number of the option that you want. ")
     
@@ -59,9 +59,13 @@ def savings():
         deposit = input("How much are you inputing each time? ").strip()
         if deposit.isdigit():
             deposit = int(deposit)
-            break
-        print("You did not input a number. Please try again. ")
-    print(f"It will take {amount/deposit} {time} to save up to ${amount}. ")
+            if deposit <= 0:
+                print("Your deposit cannot be 0 or lower. ")
+            else:
+                break
+        else:
+            print("You did not input a number. Please try again. ")
+    print(f"It will take {math.ceil(amount/deposit)} {time} to save up to ${amount}. ")
     
 #Create a function for Compound Interest Calculator
 def compound():
@@ -76,9 +80,9 @@ def compound():
         if rate.isdigit():
             rate = int(rate)
             if rate > 100:
-                print("Your interest rate is too big. ")
+                print("Your interest rate is too big. Please try again. ")
             elif rate < 0:
-                print("Your interest rate is too small. ")
+                print("Your interest rate is too small. Please try again. ")
             else:
                 rate = 1 + rate/100
                 break
@@ -90,35 +94,74 @@ def compound():
             year = int(year)
             break
         print("You did not input a number. Please try again. ")
-    final = start
-    for i in range(year):
-        final = rate * final
-    print(f"At the end of {year} years you will have ${final}. ")
+    print(f"At the end of {year} years you will have ${start * (rate ** year)}. ")
 
 #Create a function for Budget Allocator
 def budget():
+    def category_solver():
+        categories = []
+        for i in range(amount):
+            while True:
+                category = input(f"Category {i + 1} will be: ").strip()
+                if not category in categories:
+                    break
+                print("You have already inputted that. Please try again. ")
+            categories.append(category)
+        return categories
+    def percentage_solver():
+        percentages = []
+        for i in categories:
+            while True:
+                total = 0
+                percent = input(f"What percent are you dedicating to {i}? ").strip()
+                if percent.isdigit():
+                    percent = int(percent)
+                    for r in percentages:
+                        total += r
+                    if total + percent > 100:
+                        print("You have gone over 100. Please restart. ")
+                        return None
+                    elif total + percent == 100 and i == categories[-1]:
+                        percentages.append(percent)
+                        return percentages
+                    elif total + percent == 100:
+                        print("You have reached 100 before you were supposed to. Please restart. ")
+                        return None
+                    elif i == categories[-1]:
+                        print("You have run out of categories before getting to 100. Please restart. ")
+                        return None
+                    elif percent <= 0:
+                        print("Your percent is too low. Please try again. ")
+                    else:
+                        percentages.append(percent)
+                        break
+                else:
+                    print("You did not input a number. Please try again. ")
     while True:
-        catogories = input("How many budget categories will you have? ").strip()
-        if categoies.isdigit():
-            categories = int(categories)
-            if categories <= 0:
-                print("You didn't have enough categories. Pleas add more. ")
+        amount = input("How many budget categories will you have? ").strip()
+        if amount.isdigit():
+            amount = int(amount)
+            if amount <= 0:
+                print("You didn't have enough categories. Please try again. ")
             else:
                 break
         else:
             break
-    for i in range(categories):
-        print(f"Category {i}: ")
     while True:
         income = input("What is your monthly income? ").strip()
         if income.isdigit():
             income = int(income)
             if income > 0:
                 break
-            print("Your income is too low. ")
+            print("Your income is too low. Please try again. ")
         print("You did not input a number. Please try again. ")
+    categories = category_solver()
     while True:
-        def 
+        percentages = percentage_solver()
+        if percentages != None:
+            break
+    for i in range(len(categories)):
+        print(f"{categories[i]}: ${income * (percentages[i] / 100)}")
 
 #Create a function for Sale Price Calculator
 def sale():
@@ -128,12 +171,49 @@ def sale():
             initial = int(initial)
             if initial > 0:
                 break
+            print("Your input was too small. Please try again. ")
+        else:
+            print("You did not input a number. Please try again. ")
+    while True:
+        discount = input("What percent is the discount? ").strip()
+        if discount.isdigit():
+            discount = int(discount)
+            if discount <= 0:
+                print("Your discount is too small. Please try again. ")
+            elif discount >= 100:
+                print("Your discount is too big. Please try again. ")
             else:
-                print("Your input was too small. ")
+                break
+        else:
+            print("You did not input a number. Please try again. ")
+    print(f"Your discounted item now costs ${initial * ((100 - discount)/100)}")
 
 #Create a function for Tip Calculator
+def tip():
+    while True:
+        bill = input("How much is the bill? ").strip()
+        if bill.isdigit():
+            bill = int(bill)
+            if bill > 0:
+                break
+            print("Your bill is too small. Please try again. ")
+        else:
+            print("You did not input a number. Please try again. ")
+    while True:
+        percent = input("What is the percent of the tip that you are giving? ")
+        if percent.isdigit():
+            percent = int(percent)
+            if percent <= 0:
+                print("Your tip is too small. Please try again. ")
+            elif percent >= 100:
+                print("Your tip is too big. Please try again. ")
+            else:
+                break
+        else:
+            print("You did not input a number. Please try again. ")
+    print(f"The tip amount is ${(percent/100) * bill} and your total is ${(1 + (percent/100)) * bill}. ")
 
 while True:
-    check = menu()
-    if check == "quit":
+    check = menu(options)
+    if check == "6":
         break
