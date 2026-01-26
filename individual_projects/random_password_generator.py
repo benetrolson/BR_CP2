@@ -15,7 +15,7 @@ def create():
     lowercase = "abcdefghijklmnopqrstuvwxyz"
     uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     numbers = "1234567890"
-    specials = "!@#$%^&*()¡™£¢∞§¶•ªº⁄€‹›ﬁﬂ‡°·‚œ∑´®†¥¨ˆøπåß∂ƒ¬…“‘«÷≥≤µ˜∫√ç≈ΩŒ„´‰ˇÁ¨ˆØ∏”’ÅÍÍÎÏ˝ÓÔÒÚÆ»`¸˛Ç◊ı˜Â¯˘¿Ω=-+_≠–±—"
+    specials = "!@#$%^&*()¡™£¢∞§¶•ªº⁄€‹›ﬁﬂ‡°·‚œ∑´®†¥¨ˆøπåß∂ƒ¬…“‘«÷≥≤µ˜∫√ç≈ΩŒ„´‰ˇÁ¨ˆØ∏”’ÅÍÍÎÏ˝ÓÔÒÚÆ»`¸˛Ç◊ı˜Â¯˘¿Ω=-+_≠±—'\""
     while True:
         pool = ""
         password = []
@@ -31,45 +31,33 @@ def create():
                 print("Your input was not a number. Please try again. ")
         while True:
             lower = input("Does the password need lowercase letters? (Y/N) \n").strip().title()
-            if lower == "Y" or lower == "N":
-                if lower == "Y":
-                    pool += lowercase
-                    password.append(random.choice(lowercase))
+            pool, password = check(lower, lowercase, password, pool)
+            if lower in ["Y", "N"]:
                 break
-            print("Your input was not \"Y\" or \"N\". Please try again. ")
         if len(password) >= length:
             print("This is too many additions for too short a password. Please try again. ")
             continue
         while True:
             upper = input("Does the password need uppercase letters? (Y/N) \n").strip().title()
-            if upper == "Y" or upper == "N":
-                if upper == "Y":
-                    pool += uppercase
-                    password.append(random.choice(uppercase))
+            pool, password = check(upper, uppercase, password, pool)
+            if upper in ["Y", "N"]:
                 break
-            print("Your input was not \"Y\" or \"N\". Please try again. ")
         if len(password) >= length:
             print("This is too many additions for too short a password. Please try again. ")
             continue
         while True:
             number = input("Does the password need numbers? (Y/N) \n").strip().title()
-            if number == "Y" or number == "N":
-                if number == "Y":
-                    pool += numbers
-                    password.append(random.choice(numbers))
+            pool, password = check(number, numbers, password, pool)
+            if number in ["Y", "N"]:
                 break
-            print("Your input was not \"Y\" or \"N\". Please try again. ")
         if len(password) >= length:
             print("This is too many additions for too short a password. Please try again. ")
             continue
         while True:
-            special = input("Does the password need numbers? (Y/N) \n").strip().title()
-            if special == "Y" or special == "N":
-                if special == "Y":
-                    pool += specials
-                    password.append(random.choice(specials))
+            special = input("Does the password need special characters? (Y/N) \n").strip().title()
+            pool, password = check(special, specials, password, pool)
+            if special in ["Y", "N"]:
                 break
-            print("Your input was not \"Y\" or \"N\". Please try again. ")
         if len(password) >= length:
             print("This is too many additions for too short a password. Please try again. ")
             continue
@@ -85,4 +73,15 @@ def create():
             print(f"{i + 1}. {.join(password_)}")
         break
             
+def check(input, characters, password, pool):
+    match input:
+        case "Y":
+            pool += characters
+            password.append(random.choice(characters))
+            return pool, password, input
+        case "N":
+            return pool, password, input
+        case _:
+            print("Your input was not \"Y\" or \"N\". Please try again. ")
+            return pool, password, input
 
