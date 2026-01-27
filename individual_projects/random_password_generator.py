@@ -1,6 +1,7 @@
 #BHR 2nd random password generator
 import random
 
+#Create the main loop
 def main():
     while True:
         check = input("Do you want to: \n1. Make a new passcode \n2. Quit \n").strip()
@@ -12,10 +13,12 @@ def main():
             print("That was not a valid option. Please try again. ")
 
 def create():
+    #Make the lists for later
     lowercase = "abcdefghijklmnopqrstuvwxyz"
     uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     numbers = "1234567890"
     specials = "!@#$%^&*()¡™£¢∞§¶•ªº⁄€‹›ﬁﬂ‡°·‚œ∑´®†¥¨ˆøπåß∂ƒ¬…“‘«÷≥≤µ˜∫√ç≈ΩŒ„´‰ˇÁ¨ˆØ∏”’ÅÍÍÎÏ˝ÓÔÒÚÆ»`¸˛Ç◊ı˜Â¯˘¿Ω=-+_≠±—'\""
+    #Check for the length and make sure it was a valid entry
     while True:
         pool = ""
         password = []
@@ -29,6 +32,7 @@ def create():
                     break
             else:
                 print("Your input was not a number. Please try again. ")
+        #Check to see if the password should include lowercase letters
         while True:
             lower = input("Does the password need lowercase letters? (Y/N) \n").strip().title()
             pool, password = check(lower, lowercase, password, pool)
@@ -37,6 +41,7 @@ def create():
         if len(password) >= length:
             print("This is too many additions for too short a password. Please try again. ")
             continue
+        #Check to see if the password should include uppercase letters
         while True:
             upper = input("Does the password need uppercase letters? (Y/N) \n").strip().title()
             pool, password = check(upper, uppercase, password, pool)
@@ -45,6 +50,7 @@ def create():
         if len(password) >= length:
             print("This is too many additions for too short a password. Please try again. ")
             continue
+        #Check to see if the password should include numbers
         while True:
             number = input("Does the password need numbers? (Y/N) \n").strip().title()
             pool, password = check(number, numbers, password, pool)
@@ -53,6 +59,7 @@ def create():
         if len(password) >= length:
             print("This is too many additions for too short a password. Please try again. ")
             continue
+        #Check to see if the password should include special characters
         while True:
             special = input("Does the password need special characters? (Y/N) \n").strip().title()
             pool, password = check(special, specials, password, pool)
@@ -64,6 +71,7 @@ def create():
         if pool == "":
             print("You must say yes to something. Please try again. ")
             continue
+        #Give the passcodes
         print("Possible passwords: ")
         for i in range(4):
             password_ = password.copy()
