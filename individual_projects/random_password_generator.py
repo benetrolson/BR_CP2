@@ -78,18 +78,18 @@ def create():
             for _ in range(length - len(password)):
                 password_.append(random.choice(pool))
             random.shuffle(password_)
-            print(f"{i + 1}. {.join(password_)}")
+            print(f"{i + 1}. {''.join(password_)}")
         break
             
-def check(input, characters, password, pool):
-    match input:
+def check(user_input, characters, password, pool):
+    match user_input:
         case "Y":
             pool += characters
             password.append(random.choice(characters))
-            return pool, password, input
         case "N":
-            return pool, password, input
+            pass
         case _:
             print("Your input was not \"Y\" or \"N\". Please try again. ")
-            return pool, password, input
+    return pool, password
 
+main()
