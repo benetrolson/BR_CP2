@@ -1,4 +1,5 @@
 #BHR 2nd morse code translator
+#Add the morse code key
 morse_code = {
   "a": ".-",
   "b": "-...",
@@ -30,6 +31,7 @@ morse_code = {
   " ": "/"
 }
 
+#Create the main section of the code
 def main(morse_code):
   while True:
     check = input("Do you want to: \n1. Translate the Morse Code to English \n2. Translate English to Morse Code \n3. Quit \n")
@@ -42,6 +44,7 @@ def main(morse_code):
     else:
       print("You did not input an option. Please try again. ")
 
+#Create the function for translating from morse to english
 def morse_to_english(morse_code):
   message = ""
   code = input("Could you please input the morse code using periods and dashes? Please use '|' as spaces. There will be no punctuation. ")
@@ -53,9 +56,8 @@ def morse_to_english(morse_code):
         message += morse_code[letter]
     message += " "
   print(message.strip())
-        
-    
 
+#Create the function for translating from english to morse
 def english_to_morse(morse_code):
   english = input("What is the code you need translated? Please don't use punctuation. ").lower()
   code = ""
