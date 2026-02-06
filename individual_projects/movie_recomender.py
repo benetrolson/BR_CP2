@@ -23,7 +23,12 @@ def search(movies):
             filters.append("Genre")
         if "2" in check:
             filters.append("Director")
-        if "3"
+        if "3" in check:
+            filters.append("Notable Actors")
+        if "4" in check:
+            filters.append("Length")
+        if not filters:
+            continue
 
 
 #show all the movies
