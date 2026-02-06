@@ -18,8 +18,13 @@ def main(movies):
 def search(movies):
     while True:
         filters = []
+        recommendations = []
         check = input("Choose filters to apply (enter numbers separated by commas, e.g., 1,3: \n1. Genre \n2. Director \n3. Actor \n4. Length (min/max) \n")
         if "1" in check:
+            genre = input("What genre do you want to choose? (Please use a one word answer)").title()
+            for movie in movies:
+                if genre in movie["Genre"]:
+                    
             filters.append("Genre")
         if "2" in check:
             filters.append("Director")
@@ -33,6 +38,9 @@ def search(movies):
 
 #show all the movies
 def show(movies):
+    for movie in movies:
+        for i in movie.keys():
+            print(f"{i}: {movie[i]}")
 
 #Make the code attempt to open the csv and remember it
 try:
