@@ -16,18 +16,22 @@ def main(movies):
 
 #search for all the movies
 def search(movies):
+    #helper function to reduce code
     def filter_function(key, name, recommendations):
-        return [
-            movie for movie in recommendations
-            if name in movie[key].lower()
-        ]
+        name = name.lower()
+        results = []
+        for movie in recommendations:
+            values = movie.get(key, [])
+            if any(name in value for value in values):
+                results.append(movie)
+        return results
     while True:
         recommendations = movies.copy()
         check = input("Choose filters to apply (enter numbers separated by commas, e.g., 1,3: \n1. Genre \n2. Director \n3. Actor \n4. Length (min/max) \n5. Quit\n")
         if "5" in check:
             break
         if "1" in check:
-            genre = input("What genre do you want to choose? (Please use a one word answer)").lower()
+            genre = input("What genre do you want to choose? (e.g., drama, sci-fi)").lower()
             recommendations = filter_function("Genre", genre, recommendations)
         if "2" in check:
             director = input("Which director do you want to choose? ").lower()
@@ -79,14 +83,19 @@ try:
             movies.append(
                 {
                     header[0]: line[0],
-                    header[1]: line[1],
-                    header[2]: line[2],
+                    header[1]: [d.strip().lower() for d in line[1].split(",")],
+                    header[2]: [g.strip().lower() for g in line[2].split("/")],
                     header[3]: line[3],
                     header[4]: int(line[4]),
-                    header[5]: line[5]
+                    header[5]: [a.strip().lower() for a in line[5].split(",")]
                 }
             )
-except:
+#I found out that you can do multiple excepts, so:
+except FileNotFoundError:
     print("Can't find CSV. ")
+except ValueError:
+    print("A movie has an unexpected length value. ")
+except Exception as e:
+    print("Unexpected error: ", e)
 else:
     main(movies)
