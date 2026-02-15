@@ -3,7 +3,7 @@ import csv
 #Create the main function from which all the other functions run. 
 def main(library):
   while True:
-    print("Welcome to your personal library. \nYour options are: \n1. View \n2. Add \n3. Remove \n4. Search \n5. Exit")
+    print("Welcome to your personal library. \nYour options are: \n1. View \n2. Add \n3. Remove \n4. Search \n5. Edit \n6. Exit")
     check = input("What do you want to do? ").strip()
     if check == "1":
       view(library)
@@ -14,6 +14,8 @@ def main(library):
     elif check == "4":
       search(library)
     elif check == "5":
+      library = edit(library)
+    elif check == "6":
       break
     else:
       print("That was not an option. Please try again. ")
@@ -87,6 +89,8 @@ def search(library):
       found = True
   if not found:
     print("There was no matching item. ")
+
+def edit(library):
 
 def save(library):
   try:
