@@ -91,6 +91,28 @@ def search(library):
     print("There was no matching item. ")
 
 def edit(library):
+  while True:
+    view(library)
+    option = input("What is the number of the book that you want to edit? ").strip()
+    if option <= len(library) and option > 0:
+      print("Please try again. That was not included in the options. ")
+      continue
+    check = input("Do you want to edit \n1. The title \n2. The author \n3. Both \n")
+    if check == "1":
+      new_title = input("What do you want the title to be changed to? ")
+    elif check == "2":
+      new_author = input("What do you want the author to be changed to? ")
+    elif check == "3":
+      new_title = input("What do you want the title to be changed to? ")
+      new_author = input("What do you want the author to be changed to? ")
+    else:
+      print("Please try again. That was not an option. ")
+      continue
+    if check == "1" or check == "3":
+      library[option]["Title"] = new_title
+    if check == "2" or check == "3":
+      library[option]["Author"] = new_author
+    save(library)
 
 def save(library):
   try:
