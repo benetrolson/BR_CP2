@@ -52,8 +52,8 @@ def remove(library):
     if removal.isdigit():
       removal = int(removal)
       if removal <= len(library) and removal > 0:
+        print(f"You removed {library[removal - 1]['Title']} by {library[removal - 1]['Author']}.")
         library.pop(removal - 1)
-        print(f"You removed {removed_book['Title']} by {removed_book['Author']}.")
         save(library)
         return library
       elif removal <= 0:
