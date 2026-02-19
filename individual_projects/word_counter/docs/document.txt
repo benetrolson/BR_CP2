@@ -1,0 +1,1 @@
+Hello. This is the new and improved word counter, in which it counts every word in this document. It is a powerful tool that also updates the time that it last counted the words. 
