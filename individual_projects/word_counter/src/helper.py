@@ -13,4 +13,7 @@ def choice_input(choices, prompt = ">"):
 def txt_reader(path):
     try:
         with open(path) as file:
+            return file
+    except Exception as e:
+        print(f"You had an {e}. ")
             
