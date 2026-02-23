@@ -1,4 +1,5 @@
 # BHR 2nd word counter
+from helper import *
 
 def view():
   file = txt_reader("docs\\document.txt")
