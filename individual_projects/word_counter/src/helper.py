@@ -16,3 +16,10 @@ def txt_reader(path):
             return file
     except Exception as e:
         print(f"You had an {e}. ")
+
+def txt_saver(path, file):
+    try:
+        with open(path, "w") as document:
+            document.write(file)
+    except Exception as e:
+        print(f"You had an {e}. ")
