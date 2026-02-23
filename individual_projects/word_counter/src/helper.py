@@ -16,4 +16,3 @@ def txt_reader(path):
             return file
     except Exception as e:
         print(f"You had an {e}. ")
-            
