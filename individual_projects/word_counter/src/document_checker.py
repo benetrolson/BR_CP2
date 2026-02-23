@@ -14,6 +14,6 @@ def edit():
     addition = input()
     if not addition:
       break
-    additions += addition
+    additions.append(addition)
   updated_file = file + "\n" + "\n".join(additions)
   txt_saver("docs\\document.txt", file)
