@@ -13,13 +13,18 @@ def choice_input(choices, prompt = ">"):
 def txt_reader(path):
     try:
         with open(path) as file:
-            return file
+            return file.read()
+    except FileNotFoundError:
+        print("The file was not found. ")
     except Exception as e:
         print(f"You had an {e}. ")
+        return None
 
-def txt_saver(path, file):
+def txt_saver(path, content):
     try:
         with open(path, "w") as document:
-            document.write(file)
+            document.write(content)
+    except FileNotFoundError:
+        print("The file was not found. ")
     except Exception as e:
         print(f"You had an {e}. ")
