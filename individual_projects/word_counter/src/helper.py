@@ -18,7 +18,7 @@ def txt_reader(path):
         print("The file was not found. ")
     except Exception as e:
         print(f"You had an {e}. ")
-        return None
+        return ""
 
 def txt_saver(path, content):
     try:
