@@ -1,4 +1,5 @@
 # BHR 2nd word counter
+from helper import *
 
 def word_counter():
   word_count = 0
