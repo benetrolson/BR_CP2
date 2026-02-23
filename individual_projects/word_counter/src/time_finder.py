@@ -2,4 +2,4 @@
 import datetime
 
 def time_finder():
-    print(datetime.datetime.now().strftime("%I: %M %p %b %d %Y"))
+    return(datetime.datetime.now().strftime("%I: %M %p %b %d %Y"))
