@@ -16,4 +16,4 @@ def edit():
       break
     additions.append(addition)
   updated_file = file + "\n" + "\n".join(additions)
-  txt_saver("docs\\document.txt", file)
+  txt_saver("docs\\document.txt", updated_file)
