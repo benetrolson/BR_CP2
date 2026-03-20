@@ -8,26 +8,26 @@ class Circle:
         self.circumference = 2 * radius * math.pi
         self.area = radius ** 2 * math.pi
     def display(self):
-        print(f"Radius: {self.radius}, \nDiameter: {self.diameter}, \nCircumference: {self.circumference}, \nArea: {self.area}\n")
+        print(f"Shape: Circle, \nRadius: {self.radius}, \nDiameter: {self.diameter}, \nCircumference: {self.circumference}, \nArea: {self.area}\n")
 
 class Square:
     def __init__(self, length):
         self.length = length
         self.area = length ** 2
-        self.diagonal = math.sqrt(length * 2)
+        self.diagonal = length * math.sqrt(2)
         self.perimeter = length * 4
     def display(self):
-        print(f"Length: {self.length}, \nArea: {self.area}, \nPerimeter: {self.perimeter}, \nDiagonal: {self.diagonal}\n")
+        print(f"Shape: Square, \nLength: {self.length}, \nArea: {self.area}, \nPerimeter: {self.perimeter}, \nDiagonal: {self.diagonal}\n")
 
 class Rectangle:
     def __init__(self, length, width):
         self.length = length
         self.width = width
         self.area = length * width
-        self.diagonal = math.sqrt(length + width)
+        self.diagonal = math.sqrt(length ** 2 + width ** 2)
         self.perimeter = length * 2 + width * 2
     def display(self):
-        print(f"Length: {self.length}, \nWidth: {self.width}, \nArea: {self.area}, \nPerimeter: {self.perimeter}, \nDiagonal: {self.diagonal}\n")
+        print(f"Shape: Rectangle, \nLength: {self.length}, \nWidth: {self.width}, \nArea: {self.area}, \nPerimeter: {self.perimeter}, \nDiagonal: {self.diagonal}\n")
 
 class Triangle:
     def __init__(self, height, base_length):
@@ -36,6 +36,14 @@ class Triangle:
         self.area = (base_length * height) / 2
         self.perimeter = base_length * 3
     def display(self):
-        print(f"Length: {self.base_length}, \nHeight: {self.height}, \nArea: {self.area}, \nPerimeter: {self.perimeter}\n")
+        print(f"Shape: Triangle, \nLength: {self.base_length}, \nHeight: {self.height}, \nArea: {self.area}, \nPerimeter: {self.perimeter}\n")
 
-
+def make_shape(shape_dict):
+    if shape_dict["type"] == "square":
+        return Square(int(shape_dict["length"]))
+    elif shape_dict["type"] == "circle":
+        return Circle(int(shape_dict["radius"]))
+    elif shape_dict["type"] == "rectangle":
+        return Rectangle(int(shape_dict["length"]), int(shape_dict["width"]))
+    elif shape_dict["type"] == "triangle":
+        return Triangle(int(shape_dict["height"]), int(shape_dict["length"]))

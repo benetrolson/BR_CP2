@@ -1,0 +1,5 @@
+type,length,width,height,radius
+square,20,,,
+triangle,20,,20,
+circle,,,,20
+rectangle,10,40,,
