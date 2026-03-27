@@ -11,6 +11,11 @@ def csv_to_dict(path):
                 i = 0
                 current_line = {}
                 for column in header:
+                    if "," in line[i]:
+                        strlistconvert(line[i])
+                        for value in line[i]:
+                            if ":" in value:
+                                listdictconvert(line[i])
                     current_line[column] = line[i]
                     i += 1
                 finished.append(current_line)
@@ -24,6 +29,9 @@ def save_csv(path, dict):
         if not dict:
             return
         with open(path, mode = "w", newline="") as file:
+            for key, value in dict.items():
+                if isinstance(value, (list, dict)):
+                    dict[key] = str(value)
             header = dict[0].keys()
             writer = csv.DictWriter(file, fieldnames=header)
             writer.writeheader()
@@ -34,7 +42,7 @@ def save_csv(path, dict):
 
 def choice_input(choices, prompt = ">"):
     while True:
-        choice = input(prompt).lower().strip()
+        choice = input(prompt)
         if choice in choices:
             return choice
         elif choice in ["idk", "i don't know", "i dont know"]:
@@ -70,8 +78,20 @@ def txt_saver(path, content):
     except Exception as e:
         print(f"You had an {e}. ")
 
-def strike(text):
-    result = ''
-    for c in text:
-        result = result + c + '\u0336'
-    return result
+def strlistconvert(string):
+    strlist = []
+    tempstr = ""
+    for char in string:
+        if char != ",":
+            tempstr = f"{tempstr}"+f"{char}"
+        else:
+            strlist.append(tempstr)
+            tempstr = ""
+    return strlist
+
+def listdictconvert(listitem):
+    dictversion = {}
+    for item in listitem:
+        keypair = item.split(":")
+        dictversion[keypair[0]] = keypair[1]
+    return dictversion
