@@ -12,7 +12,16 @@ def menu():
                 name = input("What is the student's name? (Please capitalize correctly) \n> ")
                 id_number = input("What is the id number of the student? ")
                 year = int(choice_input(["9", "10", "11", "12"], "What is the grade of the student? "))
-                gradebook.append({"name": name, "id": id_number, "year": year, "grades": [], "grade": 0})
+                check = int_input("How many grades do you want to add for the student? ")
+                grades = []
+                for i in range(check):
+                    grade = int_input("What is the student's grade? ")
+                    for i in gradebook:
+                        if i[key] == student:
+                            i["grades"].append(grade)
+                            i["grade"] = sum(i["grades"]) / len(i["grades"])
+                            grades.append(grade)
+                gradebook.append({"name": name, "id": id_number, "year": year, "grades": grades, "grade": grade})
             case 2:
                 choice = choice_input(["1", "2"], "Would you rather find your student by their \n1. Name \n2. ID \n> ")
                 if choice == "1":
@@ -49,7 +58,7 @@ def menu():
             case 4:
                 for i in gradebook:
                     print(f"Name: {i['name']} \nID: {i['id']} \nYear: {i['year']} \nGrades: ")
-                    for grade in i["grades"].values():
+                    for grade in i["grades"]:
                         print(grade)
                     print(f"Overall Grade: {i['grade']}")
             case 5:
@@ -59,5 +68,8 @@ def menu():
                 print(f"The class average is {total / len(gradebook)}")
             case 6:
                 break
+        for i in gradebook:
+            i["grades"] = str(i["grades"])
+        save_csv("individual_projects/gradebook/docs/gradebook.csv", gradebook)
 
 menu()

@@ -12,10 +12,10 @@ def csv_to_dict(path):
                 current_line = {}
                 for column in header:
                     if "," in line[i]:
-                        strlistconvert(line[i])
+                        line[i] = strlistconvert(line[i])
                         for value in line[i]:
                             if ":" in value:
-                                listdictconvert(line[i])
+                                line[i] = listdictconvert(line[i])
                     current_line[column] = line[i]
                     i += 1
                 finished.append(current_line)
