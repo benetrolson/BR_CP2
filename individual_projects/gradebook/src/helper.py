@@ -11,35 +11,37 @@ def csv_to_dict(path):
                 i = 0
                 current_line = {}
                 for column in header:
-                    if "," in line[i]:
+                    if "," in line[i] and "[" in line[i] and "]" in line[i]:
                         line[i] = strlistconvert(line[i])
                         for value in line[i]:
                             if ":" in value:
                                 line[i] = listdictconvert(line[i])
                     current_line[column] = line[i]
+                    if line[i].isdigit():
+                        current_line[column] = int(line[i])
                     i += 1
                 finished.append(current_line)
     except FileNotFoundError: print("The file was not found. ")
-    except Exception as e: print(f"You had a(n) {e}. ")
+    except Exception as e: print(f"You had a(n) {e} error. ")
     else: return finished
-    return {}
+    return []
 
-def save_csv(path, dict):
+def save_csv(path, data):
     try:
-        if not dict:
+        if not data:
             return
-        with open(path, mode = "w", newline="") as file:
-            for key, value in dict.items():
-                if isinstance(value, (list, dict)):
-                    dict[key] = str(value)
-            header = dict[0].keys()
+        with open(path, mode="w", newline="") as file:
+            for row in data:
+                for key, value in row.items():
+                    if isinstance(value, (list, dict)):
+                        row[key] = str(value)
+            header = data[0].keys()
             writer = csv.DictWriter(file, fieldnames=header)
             writer.writeheader()
-            writer.writerows(dict)
-    except FileNotFoundError: print("The file was not found. ")
-    except Exception as e: print(f"You had a(n) {e}. ")
+            writer.writerows(data)
+    except FileNotFoundError: print("The file was not found.")
+    except Exception as e: print(f"You had a(n) {e} error.")
         
-
 def choice_input(choices, prompt = ">"):
     while True:
         choice = input(prompt)
@@ -79,14 +81,19 @@ def txt_saver(path, content):
         print(f"You had an {e}. ")
 
 def strlistconvert(string):
+    string = string.strip("[]")  # remove brackets
+    if not string:
+        return []
     strlist = []
-    tempstr = ""
+    temp = ""
     for char in string:
         if char != ",":
-            tempstr = f"{tempstr}"+f"{char}"
+            temp += char
         else:
-            strlist.append(tempstr)
-            tempstr = ""
+            strlist.append(int(temp.strip()))
+            temp = ""
+    if temp:
+        strlist.append(int(temp.strip()))
     return strlist
 
 def listdictconvert(listitem):
