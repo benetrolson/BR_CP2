@@ -5,7 +5,10 @@ def menu():
     dictionary = csv_to_dict("individual_projects/gradebook/docs/gradebook.csv")
     gradebook = Gradebook()
     for i in dictionary:
-        gradebook.add_student(Student(i["name"], i["id"], i["year"], i["grades"]))
+        grades = i["grades"]
+        if isinstance(grades, str): grades = strlistconvert(grades)
+        if not isinstance(grades, list): grades = []
+        gradebook.add_student(Student(i["name"], i["id"], i["year"], grades))
     print("Welcome to the gradebook! ")
     while True:
         names = []
@@ -19,10 +22,7 @@ def menu():
                 grades = []
                 for _ in range(check):
                     grade = int_input("What is the student's grade? ")
-                    for i in gradebook.students:
-                        i["grades"].append(grade)
-                        i["grade"] = sum(i["grades"]) / len(i["grades"])
-                        grades.append(grade)
+                    grades.append(grade)
                 gradebook.add_student(Student(name, id_number, year, grades))
             case 2:
                 choice = choice_input(["1", "2"], "Would you rather find your student by their \n1. Name \n2. ID \n> ")
@@ -31,15 +31,16 @@ def menu():
                 elif choice == "2":
                     key = "id"
                 for i in gradebook.students:
-                    names.append(i.key)
+                    names.append(getattr(i, key))
                 if not names:
                     continue
                 student = choice_input(names, f"What is the {key} of the student you are adding a grade to? ")
                 grade = int_input("What is the student's new grade? ")
                 for i in gradebook.students:
-                    if i[key] == student:
+                    if getattr(i, key) == student:
                         i.grades.append(grade)
                         i.grade = sum(i.grades) / len(i.grades)
+
             case 3:
                 choice = choice_input(["1", "2"], "Would you rather find your student by their \n1. Name \n2. ID \n> ")
                 if choice == "1":
@@ -47,11 +48,11 @@ def menu():
                 elif choice == "2":
                     key = "id"
                 for i in gradebook.students:
-                    names.append(i.key)
+                    names.append(getattr(i, key))
                 if not names:
                     continue
                 student = choice_input(names, f"What is the {key} of the student you are viewing? ")
-                gradebook.view_student(student)
+                gradebook.view_student(student, key)
             case 4:
                 if not gradebook.students:
                     print("There are no students in the gradebook. ")

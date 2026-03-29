@@ -6,11 +6,11 @@ class Student:
         self.id = id_number
         self.year = year
         self.grades = grades
-        self.grade = sum(grades) / len(grades)
+        self.grade = sum(grades) / len(grades) if grades else 0
 
 class Gradebook:
-    def __init__(self, students = []):
-        self.students = students
+    def __init__(self, students = None):
+        self.students = students if students else []
     def add_student(self, student):
         self.students.append(student)
     def add_grade(self, student, grade):
