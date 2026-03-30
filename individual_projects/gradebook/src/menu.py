@@ -11,8 +11,7 @@ def menu():
         gradebook.add_student(Student(i["name"], i["id"], i["year"], grades))
     print("Welcome to the gradebook! ")
     while True:
-        names = []
-        check = int(choice_input(["1", "2", "3", "4", "5", "6"], "Do you want to \n1. Add New Student \n2. Add Grade to Student \n3. View Student Record \n4. View All Students \n5. Class Summary \n6. Exit \n> "))
+        check = int(choice_input(["1", "2", "3", "4", "5", "6", "7"], "Do you want to \n1. Add New Student \n2. Add Grade to Student \n3. View Student Record \n4. View All Students \n5. Class Summary \n6. Class Statistics \n7. Exit \n> "))
         match check:
             case 1:
                 name = input("What is the student's name? (Please capitalize correctly) \n> ")
@@ -21,25 +20,35 @@ def menu():
                 check = int_input("How many grades do you want to add for the student? ")
                 grades = []
                 for _ in range(check):
-                    grade = int_input("What is the student's grade? ")
+                    while True:
+                        grade = int_input("What is the student's new grade? ")                  
+                        if 0 <= grade <= 100: break
+                        print("That was an invalid grade. Please enter a number between 0 and 100. ")
                     grades.append(grade)
                 gradebook.add_student(Student(name, id_number, year, grades))
+                print("Student added. ")
             case 2:
                 choice = choice_input(["1", "2"], "Would you rather find your student by their \n1. Name \n2. ID \n> ")
                 if choice == "1":
                     key = "name"
                 elif choice == "2":
                     key = "id"
-                for i in gradebook.students:
-                    names.append(getattr(i, key))
+                names = [getattr(i, key) for i in gradebook.students]
                 if not names:
                     continue
                 student = choice_input(names, f"What is the {key} of the student you are adding a grade to? ")
-                grade = int_input("What is the student's new grade? ")
+                while True:
+                    grade = int_input("What is the student's new grade? ")
+                    if 0 <= grade <= 100: break
+                    print("That was an invalid grade. Please enter a number between 0 and 100. ")
+                found = False
                 for i in gradebook.students:
                     if getattr(i, key) == student:
-                        i.grades.append(grade)
-                        i.grade = sum(i.grades) / len(i.grades)
+                        i.add_grade(grade)
+                        found = True
+                        print("Grade added. ")
+                        break
+                if not found: print("Student not found.")
 
             case 3:
                 choice = choice_input(["1", "2"], "Would you rather find your student by their \n1. Name \n2. ID \n> ")
@@ -47,8 +56,7 @@ def menu():
                     key = "name"
                 elif choice == "2":
                     key = "id"
-                for i in gradebook.students:
-                    names.append(getattr(i, key))
+                names = [getattr(i, key) for i in gradebook.students]
                 if not names:
                     continue
                 student = choice_input(names, f"What is the {key} of the student you are viewing? ")
@@ -61,6 +69,8 @@ def menu():
             case 5:
                 gradebook.class_summary()
             case 6:
+                gradebook.class_statistics()
+            case 7:
                 break
         save_csv("individual_projects/gradebook/docs/gradebook.csv", [vars(student) for student in gradebook.students])
 

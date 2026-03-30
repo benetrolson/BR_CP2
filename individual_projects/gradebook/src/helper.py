@@ -11,14 +11,10 @@ def csv_to_dict(path):
                 i = 0
                 current_line = {}
                 for column in header:
-                    if "," in line[i] and "[" in line[i] and "]" in line[i]:
-                        line[i] = strlistconvert(line[i])
-                        for value in line[i]:
-                            if ":" in value:
-                                line[i] = listdictconvert(line[i])
+                    if "[" in line[i] and "]" in line[i]: line[i] = strlistconvert(line[i])
+                    if "{" in line[i] and "}" in line[i]: line[i] = strlistconvert(listdictconvert(line[i]))
                     current_line[column] = line[i]
-                    if line[i].isdigit():
-                        current_line[column] = int(line[i])
+                    if line[i].isdigit(): current_line[column] = int(line[i])
                     i += 1
                 finished.append(current_line)
     except FileNotFoundError: print("The file was not found. ")
@@ -28,20 +24,22 @@ def csv_to_dict(path):
 
 def save_csv(path, data):
     try:
-        if not data:
-            return
+        if not data: return
         with open(path, mode="w", newline="") as file:
+            cleaned_data = []
             for row in data:
+                new_row = {}
                 for key, value in row.items():
-                    if isinstance(value, (list, dict)):
-                        row[key] = str(value)
-            header = data[0].keys()
+                    if isinstance(value, (list, dict)): new_row[key] = str(value)
+                    else: new_row[key] = value
+                cleaned_data.append(new_row)
+            header = cleaned_data[0].keys()
             writer = csv.DictWriter(file, fieldnames=header)
             writer.writeheader()
-            writer.writerows(data)
-    except FileNotFoundError: print("The file was not found.")
-    except Exception as e: print(f"You had a(n) {e} error.")
-        
+            writer.writerows(cleaned_data)
+    except FileNotFoundError: print("The file was not found. ")
+    except Exception as e: print(f"You had a(n) {e} error. ")
+
 def choice_input(choices, prompt = ">"):
     while True:
         choice = input(prompt)
