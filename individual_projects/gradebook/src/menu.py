@@ -16,7 +16,7 @@ def menu():
             case 1:
                 name = input("What is the student's name? (Please capitalize correctly) \n> ")
                 id_number = input("What is the id number of the student? ")
-                year = int(choice_input(["9", "10", "11", "12"], "What is the grade of the student? "))
+                year = int(choice_input(["9", "10", "11", "12"], "What is the year grade of the student? "))
                 check = int_input("How many grades do you want to add for the student? ")
                 grades = []
                 for _ in range(check):
