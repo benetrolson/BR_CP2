@@ -1,2 +1,2 @@
-name,id,year,grades,grade
-Bob Robert,42,10,"[92,93,94]",93
+name,id,year,grades,grade,letter_grade,academic_standing
+asdf,1111,11,"[87, 94, 50, 88]",79.75,C,Needs Improvement
