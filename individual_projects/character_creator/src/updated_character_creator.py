@@ -1,11 +1,12 @@
 #BR 2nd character creator
 import random
+from helper import *
 
 characters={}
 for i in characters:
-   items_in_inv=[]
-   inv_weight=items_in_inv(len)
-   weight_limit =50
+   items_in_inv = []
+   inv_weight = items_in_inv(len)
+   weight_limit = 50
 
 races = (
    {
@@ -115,105 +116,67 @@ classes = (
    "constitution_modifier": 3,
 })
 
-
 #Create a function for creating a character
 def character_creator(characters, races, classes):
-#   Infinite loop
-   while True:
 #       Display all possible races
-       print("Available races:")
-       for i, race in enumerate(races, 1):
-           print(f"{i}. {race['name']}")
+    print("Available races:")
+    for i, race in enumerate(races, 1):
+        print(f"{i}. {race['name']}")
 #       Ask for race
-       character_race = input("What race would you like? (Enter number): ").strip()
-#       If the race is a valid option
-       try:
-           race_index = int(character_race) - 1
-           if 0 <= race_index < len(races):
-#           Break the loop
-               break
-           else:
-               print("🚫That input was invalid. Please try again.🚫")
-       except ValueError:
-           print("🚫That input was invalid. Please try again.🚫")
-#       Otherwise tell them to try again
-       print("🚫That input was invalid. Please try again. 🚫")
-#   Infinite loop
-   while True:
+    character_race = choice_input(["1", "2", "3", "4", "5"], "What race would you like? (Enter number): ").strip()
 #       Display all possible classes
-       print("Available classes:")
-       for i, cls in enumerate(classes, 1):
-           print(f"{i}. {cls['name']}")
+    print("Available classes:")
+    for i, cls in enumerate(classes, 1):
+        print(f"{i}. {cls['name']}")
 #       Ask for class
-       character_class = input("What class would you like? (Enter number): ").strip()
-#       if the class is a valid option
-       try:
-           class_index = int(character_class) - 1
-           if 0 <= class_index < len(classes):
-#           Break the loop
-               break
-           else:
-               print("🚫That input was invalid. Please try again.🚫")
-       except ValueError:
-           print("🚫That input was invalid. Please try again.🚫")
+    character_class = choice_input(["1", "2", "3", "4", "5", "6", "7"], "What class would you like? (Enter number): ").strip()
 #   Infinite loop
-   while True:
+    while True:
 #       Ask for name
-       character_name=input("What name do you want for your character? ").strip().title()
+       character_name = input("What name do you want for your character? ").strip().title()
 #       If that name exists
        if character_name in characters:
 #           Tell them that they must try again with a name not already used
-           print("🚫That name already exists. Please try again.🚫")
+           print("That name already exists. Please try again.")
 #       Otherwise if that name doesn’t even exist
        elif character_name not in characters:
 #           End the infinite loop
            break
 
-
 #   Run the attribute dice roller from last year
-   strength, intelligence, wisdom,  charisma, constitution, dexterity = attribute_roller()
-#   Infinite loop
-   while True:
+    strength, intelligence, wisdom,  charisma, constitution, dexterity = attribute_roller()
 #       Display the possible skill for the user
-       print("Your possible skills are: ")
-       skills = ["Archery", "Swordsmanship", "Magic", "Stealth", "Healing", "Intimidation"]
-       for i, skill in enumerate(skills, 1):
-           print(f"{i}. {skill}")
+    print("Your possible skills are: ")
+    skills = ["Archery", "Swordsmanship", "Magic", "Stealth", "Healing", "Intimidation"]
+    for i, skill in enumerate(skills, 1):
+        print(f"{i}. {skill}")
 #       Let them choose their skill
-       character_skill = input("What skill would you like? (Enter number): ").strip()
-#       If that skill is a valid option
-       try:
-           skill_index = int(character_skill) - 1
-           if 0 <= skill_index < len(skills):
-#           End the loop
-               break
-#       Otherwise tell the user that they must try again
-           else:
-               print("That input was invalid. Please try again.")
-       except ValueError:
-           print("That input was invalid. Please try again.")
-   character_race = (int(character_race) - 1)
-   for i in range(len(races)):
+    character_skill = choice_input(["1", "2", "3", "4", "5", "6"], "What skill would you like? (Enter number): ").strip()
+    character_race = (int(character_race) - 1)
+    for i in range(len(races)):
        if character_race == i:
            character_race = races[i]["name"]
-   character_class = (int(character_class) - 1)
-   for i in range(len(classes)):
+    character_class = (int(character_class) - 1)
+    for i in range(len(classes)):
        if character_class == i:
            character_class = classes[i]["name"]
-   for i in range(len(skills)):
+    for i in range(len(skills)):
        if character_skill == i:
            character_skill = classes[i]
-   characters[character_name] = {
-"race": character_race,
-"class": character_class,
-"skill": character_skill,
-"strength": strength,
-"intelligencer": intelligence,
-"wisdom":  wisdom,
-"charisma": charisma,
-"dexterity": dexterity,
-"constitution": constitution
-}
+    characters[character_name] = {
+       "race": character_race,
+       "class": character_class,
+       "skill": character_skill,
+       "strength": strength,
+       "intelligencer": intelligence,
+       "wisdom":  wisdom,
+       "charisma": charisma,
+       "dexterity": dexterity,
+       "constitution": constitution,
+       "inventory": [],
+       "inv_weight": 0
+       }
+
 #search character function
 def search_character(characters):
    while True:
@@ -222,6 +185,9 @@ def search_character(characters):
            break
        elif name in characters:
            print(characters[name])
+           check = choice_input(["1", "2"], "Do you want to: \n 1. Manage this character's inventory \n 2. Leave \n>")
+           if check == "1":
+               manage_inventory(characters[name]["inventory"], characters[name]["inv_weight"], characters[name]["strength"] * 10)
            break
        else:
            print("That was not a name in the list of characters.")
@@ -233,7 +199,7 @@ def manage_inventory(items_in_inv, inv_weight, weight_limit):
        user_choice = input("Would you like to: \n1. Add an item \n2. Equip a pre-existent item \n3. Delete an item \n4. View inventory \n5. Leave inventory\nInsert number: ").strip()
        if user_choice == '1':
            if inv_weight >= weight_limit:
-               print("🚫You can't add anything - inventory is full!🚫")
+               print("You can't add anything - inventory is full!")
            else:
                item_name = input("Enter item name: ").strip().title()
                try:
@@ -244,12 +210,12 @@ def manage_inventory(items_in_inv, inv_weight, weight_limit):
                        inv_weight += item_weight
                        print(f"Added {item_name}!")
                    else:
-                       print("🚫Item too heavy for remaining capacity.🚫")
+                       print("Item too heavy for remaining capacity.")
                except ValueError:
-                   print("🚫Invalid weight input.🚫")
+                   print("Invalid weight input.")
        elif user_choice == '2':
            if not items_in_inv:
-               print("💨Nothing in inventory to equip!💨")
+               print("Nothing in inventory to equip!")
            else:
                for i, item in enumerate(items_in_inv, 1):
                    print(f"{i}. {item['name']} (Weight: {item['weight']})")
@@ -263,7 +229,7 @@ def manage_inventory(items_in_inv, inv_weight, weight_limit):
                    print("Invalid input.")
        elif user_choice == '3':
            if not items_in_inv:
-               print("💨Nothing in inventory to delete!💨")
+               print("Nothing in inventory to delete!")
            else:
                for i, item in enumerate(items_in_inv, 1):
                    print(f"{i}. {item['name']}")
@@ -281,9 +247,9 @@ def manage_inventory(items_in_inv, inv_weight, weight_limit):
 
        elif user_choice == '4':
            if not items_in_inv:
-               print("💨Inventory is empty!💨")
+               print("Inventory is empty!")
            else:
-               print("\n💰Your Inventory💰")
+               print("\nYour Inventory")
                for i, item in enumerate(items_in_inv, 1):
                    print(f"{i}. {item['name']} (Weight: {item['weight']})")
                print(f"Total weight: {inv_weight}/{weight_limit}\n")
@@ -291,13 +257,13 @@ def manage_inventory(items_in_inv, inv_weight, weight_limit):
        elif user_choice == '5':
            break
        else:
-           print("🚫Invalid input. Please try again.🚫")
+           print("Invalid input. Please try again.")
 
 
 #Display items function
 def display_items(items_in_inv):
    if not items_in_inv:
-       print("🚫No items to display.🚫")
+       print("No items to display.")
    else:
        print("\nYour Items:")
        for i, item in enumerate(items_in_inv, 1):
@@ -333,7 +299,7 @@ def main(characters, races, classes):
 #   Infinite loop
    while True:
 #       Ask the user if they want to 1. Quit 2. Create a character 3. Find a character
-       check = input("Do you want to: \n1. Create a character \n2. Find a character \n3. Manage inventory \n4. Quit \n").strip()
+       check = choice_input(["1", "2", "3", "4"], "Do you want to: \n1. Create a character \n2. Find a character \n3. Manage inventory \n4. Quit \n").strip()
 #       If they chose 1
        if check == '1':
            character_creator(characters, races, classes)
@@ -353,11 +319,6 @@ def main(characters, races, classes):
        elif check == '4':
 #           Break the infinite loop
            break
-#       Otherwise
-       else:
-#           display an invalid attempt for input validation
-           print("🚫That was an invalid input. Please try again. 🚫")
-
 
 #call main menu function
 main(characters, races, classes)
