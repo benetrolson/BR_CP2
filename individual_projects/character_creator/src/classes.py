@@ -35,16 +35,20 @@ class Character:
                 f"and is {random.choice(heights)}.")
     def to_dict(self):
         return {
-            "Name": self.name,
-            "Race": self.race,
-            "Class": self.char_class,
-            "Skill": self.skill,
-            "Strength": self.strength,
-            "Intelligence": self.intelligence,
-            "Wisdom": self.wisdom,
-            "Charisma": self.charisma,
-            "Dexterity": self.dexterity,
-            "Constitution": self.constitution
+            "name": self.name,
+            "race": self.race,
+            "class": self.char_class,
+            "skill": self.skill,
+            "strength": self.strength,
+            "intelligence": self.intelligence,
+            "wisdom": self.wisdom,
+            "charisma": self.charisma,
+            "dexterity": self.dexterity,
+            "constitution": self.constitution,
+            "inventory": self.inventory,
+            "inv_weight": self.inv_weight,
+            "backstory": self.backstory,
+            "description": self.description
         }
 
 class RandomGenerator:
@@ -80,10 +84,9 @@ class DataVisualization:
         attrs = ["Strength", "Intelligence", "Wisdom", "Charisma", "Dexterity", "Constitution"]
         values = [character.strength, character.intelligence, character.wisdom, 
                   character.charisma, character.dexterity, character.constitution]
-        values += values[:1]  # complete loop
+        values += values[:1]
         angles = np.linspace(0, 2 * np.pi, len(attrs), endpoint=False).tolist()
         angles += angles[:1]
-
         fig, ax = plt.subplots(figsize=(6,6), subplot_kw=dict(polar=True))
         ax.plot(angles, values, 'o-', linewidth=2)
         ax.fill(angles, values, alpha=0.25)
@@ -97,7 +100,7 @@ class StatisticalAnalyzer:
     def summary_statistics(self):
         return self.df.describe()
     def compare_characters(self, char_names):
-        return self.df[self.df["Name"].isin(char_names)]
+        return self.df[self.df["name"].isin(char_names)]
     def filter_by_attribute(self, attribute, threshold):
         return self.df[self.df[attribute] >= threshold]
     def sort_characters(self, attribute, ascending=False):

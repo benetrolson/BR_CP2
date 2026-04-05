@@ -202,7 +202,6 @@ def description(character, character_race):
     return description
 
 def generate_quest():
-    fake = Faker()
     actions = ["rescue", "retrieve", "assassinate", "escort", "explore", "protect", "investigate"]
     return f"Your quest is to {random.choice(actions)} {random.choice([fake.name(), f'the {fake.word()} artifact', f'a {fake.word()} beast'])} in {random.choice([fake.city(), f'the {fake.word()} forest', f'{fake.word()} ruins'])}. "
 
@@ -259,9 +258,9 @@ def analyze_characters(character_list):
     if not character_list:
         print("No characters to analyze.")
         return
-    analyzer = StatisticalAnalyzer(character_list)
+    analyzer = StatisticalAnalyzer(list(character_list.values()))
     print(analyzer.summary_statistics())
-    for i in ["Strength", "Intelligence", "Dexterity", "Constitution", "Wisdom", "Charisma"]:
+    for i in ["strength", "intelligence", "dexterity", "constitution", "wisdom", "charisma"]:
         top = analyzer.sort_characters(i).iloc[0]
         print(f"\nCharacter with highest {i}: {top['Name']} ({top[i]})")
 
@@ -352,7 +351,7 @@ def attribute_roller():
    print("Your attribute options are: ")
    for i in range(6):
        attribute_rolls.append(str(random.randint(1,6) + random.randint(1,6) + random.randint(1,6)))
-       print(attribute_rolls[i - 1])
+       print(attribute_rolls[i])
    strength = int(checker("strength"))
    intelligence = int(checker("intelligence"))
    wisdom = int(checker("wisdom"))
