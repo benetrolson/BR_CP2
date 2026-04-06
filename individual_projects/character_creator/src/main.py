@@ -1,3 +1,3 @@
-from updated_character_creator import *
+from functions import *
 
 main(characters, races, classes)

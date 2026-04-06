@@ -5,6 +5,7 @@ from classes import *
 from faker import Faker
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 fake = Faker()
 
 characters = {}
@@ -264,6 +265,28 @@ def analyze_characters(character_list):
         top = analyzer.sort_characters(i).iloc[0]
         print(f"\nCharacter with highest {i}: {top['Name']} ({top[i]})")
 
+def multi_radar(characters):
+    attributes = ["Strength", "Intelligence", "Wisdom", "Charisma", "Dexterity", "Constitution"]
+    num_attrs = len(attributes)
+    angles = np.linspace(0, 2 * np.pi, num_attrs, endpoint=False).tolist()
+    angles += angles[:1]  # close the circle
+    plt.figure(figsize=(8, 8))
+    ax = plt.subplot(111, polar=True)
+    for char in characters:
+        values = [
+            char.strength, char.intelligence, char.wisdom, 
+            char.charisma, char.dexterity, char.constitution
+        ]
+        values += values[:1]  # close the circle
+        ax.plot(angles, values, label=char.name)
+        ax.fill(angles, values, alpha=0.25)
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(attributes)
+    ax.set_yticks(range(0, 21, 5))
+    ax.set_title("Multi-Character Radar Chart")
+    plt.legend(loc='upper right')
+    plt.show()
+
 #manage inventory function
 def manage_inventory(items_in_inv, inv_weight, weight_limit):
    while True:
@@ -378,6 +401,16 @@ def save(characters):
         saving.append(char.to_dict())
     save_csv("individual_projects/character_creator/docs/characters.csv", saving)
 
+def character_dashboard(character_list):
+    df = pd.DataFrame([char.to_dict() for char in character_list])
+    attrs = ["Strength","Intelligence","Wisdom","Charisma","Dexterity","Constitution"]
+    df[attrs].plot(kind='bar', figsize=(10,6))
+    plt.title("Character Portfolio Overview")
+    plt.ylabel("Attribute Value")
+    plt.show()
+    print("\nAverage Attributes Across Characters:")
+    print(df[attrs].mean())
+
 #main menu function
 def main(characters, races, classes):
     rg = RandomGenerator()
@@ -396,12 +429,20 @@ def main(characters, races, classes):
             view_character(characters)
         #Otherwise if they chose 3
         elif check == "3":
-            compare_characters(characters)
+            choice = choice_input(["1", "2"], "Do you want to look them through: \n1. Bar charts \n2. Radar charts \n> ")
+            if choice == "1":
+                compare_characters(characters)
+            elif choice == "2":
+                multi_radar()
         #Otherwise if they chose 4
         elif check == "4":
             print(generate_quest())
         elif check == "5":
-            analyze_characters(characters)
+            choice = choice_input(["1", "2"], "Do you want to: \n1. See the characters with the best stats \n2. See the average attributes of all the characters \n> ")
+            if choice == "1":
+                analyze_characters(characters)
+            elif choice == "2":
+                character_dashboard(characters)
         elif check == '6':
             #Break the infinite loop
             break
