@@ -433,7 +433,7 @@ def main(characters, races, classes):
             if choice == "1":
                 compare_characters(characters)
             elif choice == "2":
-                multi_radar()
+                multi_radar(characters)
         #Otherwise if they chose 4
         elif check == "4":
             print(generate_quest())
